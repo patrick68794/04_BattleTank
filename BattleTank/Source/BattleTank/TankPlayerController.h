@@ -24,4 +24,19 @@ public:
 private:
 	//start the tank moving the barrel to shoot where crosshair is
 	void AimTowardsCrosshair();
+
+	bool GetSightRayHitLocation(FVector&) const;
+
+	bool GetLookDirection(FVector2D screenLocation, FVector& lookDirection) const;
+
+	bool GetLookVectorHitLocation(FVector lookDirection, FVector& hitLocation) const;
+
+	UPROPERTY(EditAnywhere)
+	float crosshairXLocation = 0.5f;
+
+	UPROPERTY(EditAnywhere)
+	float crosshairYLocation = 0.33333f;
+
+	UPROPERTY(EditAnywhere)
+	float lineTraceRange = 1000000.0f;
 };
