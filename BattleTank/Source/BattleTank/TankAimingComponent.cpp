@@ -2,6 +2,7 @@
 
 #include "BattleTank.h"
 #include "TankBarrel.h"
+#include "TankTurret.h"
 #include "TankAimingComponent.h"
 
 
@@ -18,6 +19,7 @@ UTankAimingComponent::UTankAimingComponent()
 void UTankAimingComponent::AimAt(FVector hitLocation, float launchSpeed)
 {
 	if (!barrel) { return; }
+	if (!turret) { return; }
 	FVector launchVelocity;
 	FVector startLocation = barrel->GetSocketLocation(FName("Projectile"));
 
@@ -52,11 +54,13 @@ void UTankAimingComponent::AimAt(FVector hitLocation, float launchSpeed)
 
 void UTankAimingComponent::SetBarrelReference(UTankBarrel* barrelToSet)
 {
+	if (!barrelToSet) { return; }
 	this->barrel = barrelToSet;
 }
 
 void UTankAimingComponent::SetTurretReference(UTankTurret* turretToSet)
 {
+	if (!turretToSet) { return; }
 	this->turret = turretToSet;
 }
 
@@ -67,5 +71,6 @@ void UTankAimingComponent::MoveBarrel(FVector aimDirection)
 	auto aimAsRotator = aimDirection.Rotation();
 	auto deltaRotator = aimAsRotator - barrelRotation;
 
-	barrel->ElevateBarrel(deltaRotator.Pitch); // TODO remove magic number
+	barrel->ElevateBarrel(deltaRotator.Pitch);
+	turret->RotateTurret(deltaRotator.Yaw);
 }
