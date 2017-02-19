@@ -55,6 +55,11 @@ void UTankAimingComponent::SetBarrelReference(UTankBarrel* barrelToSet)
 	this->barrel = barrelToSet;
 }
 
+void UTankAimingComponent::SetTurretReference(UTankTurret* turretToSet)
+{
+	this->turret = turretToSet;
+}
+
 void UTankAimingComponent::MoveBarrel(FVector aimDirection)
 {
 	// determine rotation needed to point the barrel in the correct direction
