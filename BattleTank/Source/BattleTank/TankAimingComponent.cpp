@@ -10,7 +10,7 @@ UTankAimingComponent::UTankAimingComponent()
 {
 	// Set this component to be initialized when the game starts, and to be ticked every frame.  You can turn these features
 	// off to improve performance if you don't need them.
-	PrimaryComponentTick.bCanEverTick = true;
+	PrimaryComponentTick.bCanEverTick = true; // TODO should this tick?
 
 	
 }
@@ -29,13 +29,23 @@ void UTankAimingComponent::AimAt(FVector hitLocation, float launchSpeed)
 		startLocation,
 		hitLocation,
 		launchSpeed,
-		ESuggestProjVelocityTraceOption::DoNotTrace
+		false,
+		0.0f,
+		0.0f,
+		ESuggestProjVelocityTraceOption::DoNotTrace // must be present to prevent bug
 	);
 	if (bHaveAimSolution)
 	{
 		auto aimDirection = launchVelocity.GetSafeNormal();
 		auto tankName = GetOwner()->GetName();
 		MoveBarrel(aimDirection);
+		auto time = GetWorld()->GetTimeSeconds();
+		UE_LOG(LogTemp, Warning, TEXT("%f: found aim solution"), time);
+	}
+	else
+	{
+		auto time = GetWorld()->GetTimeSeconds();
+		UE_LOG(LogTemp, Warning, TEXT("%f: no aim solution"), time);
 	}
 	
 }
@@ -52,5 +62,5 @@ void UTankAimingComponent::MoveBarrel(FVector aimDirection)
 	auto aimAsRotator = aimDirection.Rotation();
 	auto deltaRotator = aimAsRotator - barrelRotation;
 
-	barrel->ElevateBarrel(5);
+	barrel->ElevateBarrel(deltaRotator.Pitch); // TODO remove magic number
 }
