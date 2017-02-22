@@ -3,30 +3,32 @@
 #pragma once
 
 #include "GameFramework/Pawn.h"
-#include "Tank.generated.h"
+#include "Tank.generated.h" // Put new includes above
 
+// Forward declarations
 class UTankBarrel;
-class UTankTurret;
 class UTankAimingComponent;
+class AProjectile;
 
 UCLASS()
 class BATTLETANK_API ATank : public APawn
 {
 	GENERATED_BODY()
+
 public:
-	void AimAt(FVector hitLocation);
+	UFUNCTION(BlueprintCallable, Category = Setup)
+		void SetBarrelReference(UTankBarrel* BarrelToSet);
 
 	UFUNCTION(BlueprintCallable, Category = Setup)
-	void SetBarrelReference(UTankBarrel* barrelToSet);
+		void SetTurretReference(UTankTurret* TurretToSet);
 
-	UFUNCTION(BlueprintCallable, Category = Setup)
-	void SetTurretReference(UTankTurret* turretToSet);
+	void AimAt(FVector HitLocation);
 
-	UFUNCTION(BlueprintCallable, Category = Input)
-	void Fire();
+	UFUNCTION(BlueprintCallable, Category = Firing)
+		void Fire();
 
 protected:
-	UTankAimingComponent* aimingComponent = nullptr;
+	UTankAimingComponent* TankAimingComponent = nullptr;
 
 private:
 	// Sets default values for this pawn's properties
@@ -34,14 +36,21 @@ private:
 
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
-	
+
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* InputComponent) override;
 
-	UTankBarrel* barrel = nullptr;
+	UPROPERTY(EditDefaultsOnly, Category = Firing)
+		float LaunchSpeed = 4000;
 
-	UTankTurret* turret = nullptr;
+	UPROPERTY(EditDefaultsOnly, Category = Setup)
+		TSubclassOf<AProjectile> ProjectileBlueprint;
 
-	UPROPERTY(EditAnywhere, Category = Firing)
-	float launchSpeed = 10000.0f;
+	// Local barrel reference for spawning projectile
+	UTankBarrel* Barrel = nullptr;
+
+	UPROPERTY(EditDefaultsOnly, Category = Setup)
+	float ReloadTimeInSeconds = 3;
+
+	double LastFireTime = 0;
 };
