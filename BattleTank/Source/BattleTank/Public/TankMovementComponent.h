@@ -5,8 +5,10 @@
 #include "GameFramework/NavMovementComponent.h"
 #include "TankMovementComponent.generated.h"
 
+class UTankTrack;
+
 /**
- * 
+ * Responsible for driving tank tracks
  */
 UCLASS(ClassGroup = (Custom), meta = (BlueprintSpawnableComponent))
 class BATTLETANK_API UTankMovementComponent : public UNavMovementComponent
@@ -16,6 +18,12 @@ class BATTLETANK_API UTankMovementComponent : public UNavMovementComponent
 public:
 	UFUNCTION(BlueprintCallable, Category = Input)
 	void IntendMoveForward(float movementSpeed);
+
+	UFUNCTION(BlueprintCallable, Category = Setup)
+	void Initialize(UTankTrack* leftToSet, UTankTrack* rightToSet);
 	
-	
+private:
+	UTankTrack* leftTrack = nullptr;
+	UTankTrack* rightTrack = nullptr;
+
 };
