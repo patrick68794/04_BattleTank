@@ -19,11 +19,13 @@ public:
 	UFUNCTION(BlueprintCallable, Category = Input)
 	void IntendMoveForward(float movementSpeed);
 
+	UFUNCTION(BlueprintCallable, Category = Input)
+		void IntendTurnRight(float movementSpeed);
+
 	UFUNCTION(BlueprintCallable, Category = Setup)
 	void Initialize(UTankTrack* leftToSet, UTankTrack* rightToSet);
-	
+
 private:
 	UTankTrack* leftTrack = nullptr;
 	UTankTrack* rightTrack = nullptr;
-
 };
