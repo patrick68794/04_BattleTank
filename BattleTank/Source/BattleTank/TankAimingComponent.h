@@ -38,13 +38,17 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "Firing")
 		void Fire();
 
-	// TODO add SetTurretReference
+	bool IsBarrelMoving();
 
 protected:
 	UPROPERTY(BluePrintReadOnly, Category = "State")
-		EFiringState firingState = EFiringState::Aiming;
+		EFiringState firingState = EFiringState::Reloading;
 
 private:
+
+	virtual void BeginPlay() override;
+
+	virtual void TickComponent(float DeltaTime, enum ELevelTick TickType, FActorComponentTickFunction *ThisTickFunction) override;
 
 	UPROPERTY(EditDefaultsOnly, Category = "Firing")
 		float launchSpeed = 4000;
@@ -63,5 +67,5 @@ private:
 
 	void MoveBarrel(FVector aimDirection);
 
-	
+	FVector aimDirection;
 };

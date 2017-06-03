@@ -12,7 +12,7 @@ class BATTLETANK_API ATankAIController : public AAIController
 	GENERATED_BODY()
 	
 private:
-	float acceptanceRadius; // how close the AI is allowed to get to the player
+	float acceptanceRadius = 5000; // how close the AI is allowed to get to the player
 
 public:
 	virtual void BeginPlay() override;
